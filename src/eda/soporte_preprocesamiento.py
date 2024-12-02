@@ -173,7 +173,7 @@ class Visualizador:
         if len(categorical_columns) > 0:
             for num_col in numerical_columns:
                 try:
-                    _, axes = plt.subplots(nrows=len(categorical_columns), ncols=1, figsize=(10, 5 * len(categorical_columns)))
+                    _, axes = plt.subplots(nrows=len(categorical_columns), ncols=1, figsize=(10, 9 * len(categorical_columns)))
                     axes = axes.flat
                     plt.suptitle(f'Dispersión {num_col} vs variables categóricas', fontsize=24)
                     for indice, cat_col in enumerate(categorical_columns):

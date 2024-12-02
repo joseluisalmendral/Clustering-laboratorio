@@ -329,7 +329,7 @@ class Clustering:
         Returns:
             - pd.DataFrame. El DataFrame original con una nueva columna para las etiquetas de clusters.
         """
-        kmeans = KMeans(n_clusters=num_clusters)
+        kmeans = KMeans(n_clusters=num_clusters, random_state=42)
         km_fit = kmeans.fit(self.dataframe)
         labels = km_fit.labels_
         dataframe_original["clusters_kmeans"] = labels.astype(str)
@@ -519,3 +519,24 @@ class Clustering:
             "davies_bouldin_index": davies_bouldin,
             "cardinalidad": cardinalidad
         }, index = [0])
+    
+
+    def plot_clusters(self, df_cluster, columna_cluster):
+        columnas_plot = df_cluster.columns.drop(columna_cluster)
+
+        ncols = math.ceil(len(columnas_plot) / 2)
+        nrows = 2
+
+        fig, axes = plt.subplots(nrows=nrows, ncols=ncols, figsize=(20, 8))
+        axes = axes.flat
+
+        for indice, columna in enumerate(columnas_plot):
+            df_group = df_cluster.groupby(columna_cluster)[columna].mean().reset_index()
+            sns.barplot(x=columna_cluster, y=columna, data=df_group, ax=axes[indice], palette="coolwarm")
+            axes[indice].set_title(columna)  
+
+        if len(columnas_plot) % 2 == 1: 
+            fig.delaxes(axes[-1]) 
+
+        plt.tight_layout()
+        plt.show() 
